@@ -108,9 +108,10 @@ def assess_classifier_set(model, features, target, set_name=''):
     Returns
     -------
     """
+    from sklearn.metrics import roc_auc_score
+
     probs = model.predict_proba(features)[:, 1]  # Probabilities of the positive class
-    auc_roc = roc_auc_score(target, probs)
-    print(f"AUC-ROC {set_name}: {auc_roc}")
+    print_classifier_scores(y_probs=probs, y_actuals=target, set_name=set_name)
 
 
 def fit_assess_classifier(model, X_train, y_train, X_val, y_val):
@@ -134,6 +135,8 @@ def fit_assess_classifier(model, X_train, y_train, X_val, y_val):
     sklearn.base.ClassifierMixin
         Trained model
     """
+    from sklearn.metrics import roc_auc_score
+
     model.fit(X_train, y_train)
     assess_classifier_set(model, X_train, y_train, set_name='Training')
     assess_classifier_set(model, X_val, y_val, set_name='Validation')
